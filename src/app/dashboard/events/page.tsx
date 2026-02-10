@@ -56,34 +56,41 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       </header>
 
       {/* Category Filter Bar */}
-      <nav
-        className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none"
-        aria-label="Filter events by category"
-      >
-        {categories.map((cat) => {
-          const isActive = activeCategory === cat.value;
-          const href =
-            cat.value === "all"
-              ? "/dashboard/events"
-              : `/dashboard/events?category=${cat.value}`;
+      <div className="relative mb-6">
+        <nav
+          className="flex gap-2 overflow-x-auto pb-2 scrollbar-none"
+          aria-label="Filter events by category"
+        >
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.value;
+            const href =
+              cat.value === "all"
+                ? "/dashboard/events"
+                : `/dashboard/events?category=${cat.value}`;
 
-          return (
-            <Link
-              key={cat.value}
-              href={href}
-              className={cn(
-                "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-maroon-900 text-white"
-                  : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900"
-              )}
-              aria-current={isActive ? "page" : undefined}
-            >
-              {cat.label}
-            </Link>
-          );
-        })}
-      </nav>
+            return (
+              <Link
+                key={cat.value}
+                href={href}
+                className={cn(
+                  "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-maroon-900/30 focus-visible:ring-offset-2 focus:outline-none",
+                  isActive
+                    ? "bg-maroon-900 text-white"
+                    : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900"
+                )}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {cat.label}
+              </Link>
+            );
+          })}
+        </nav>
+        {/* Scroll overflow hint — right gradient fade */}
+        <div
+          className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent sm:hidden"
+          aria-hidden="true"
+        />
+      </div>
 
       {/* Events Grid */}
       {events && events.length > 0 ? (

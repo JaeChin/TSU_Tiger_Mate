@@ -45,10 +45,10 @@ const quickActions = [
   },
 ] as const;
 
-const priorityColors: Record<string, string> = {
-  high: "bg-red-500",
-  medium: "bg-amber-500",
-  low: "bg-green-500",
+const priorityTextColors: Record<string, string> = {
+  high: "text-red-500",
+  medium: "text-amber-500",
+  low: "text-green-500",
 };
 
 export default async function DashboardPage() {
@@ -227,7 +227,7 @@ export default async function DashboardPage() {
                   className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-surface-50"
                 >
                   <CircleDot
-                    className={`h-4 w-4 shrink-0 ${priorityColors[todo.priority] ? `text-${todo.priority === "high" ? "red" : todo.priority === "medium" ? "amber" : "green"}-500` : "text-surface-400"}`}
+                    className={`h-4 w-4 shrink-0 ${priorityTextColors[todo.priority] || "text-surface-400"}`}
                     aria-label={`${todo.priority} priority`}
                   />
                   <div className="min-w-0 flex-1">

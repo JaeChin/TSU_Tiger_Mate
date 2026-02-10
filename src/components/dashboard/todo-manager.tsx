@@ -71,6 +71,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -97,9 +98,10 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
     if (!trimmedTitle) return;
 
     setSaving(true);
+    setErrorMsg(null);
     const supabase = createClient();
 
-    await supabase.from("todos").insert({
+    const { error } = await supabase.from("todos").insert({
       user_id: userId,
       title: trimmedTitle,
       category,
@@ -108,6 +110,12 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
     });
 
     setSaving(false);
+
+    if (error) {
+      setErrorMsg("Failed to add task. Please try again.");
+      return;
+    }
+
     resetForm();
     router.refresh();
   }
@@ -118,12 +126,14 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
     // Optimistic update
     setOptimisticToggles((prev) => ({ ...prev, [todo.id]: newCompleted }));
     setTogglingId(todo.id);
+    setErrorMsg(null);
 
     const supabase = createClient();
     const { error } = await supabase
       .from("todos")
       .update({ is_completed: newCompleted })
-      .eq("id", todo.id);
+      .eq("id", todo.id)
+      .eq("user_id", userId);
 
     if (error) {
       // Revert on error
@@ -132,6 +142,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
         delete next[todo.id];
         return next;
       });
+      setErrorMsg("Failed to update task. Please try again.");
     }
 
     setTogglingId(null);
@@ -140,10 +151,23 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
 
   async function handleDelete(id: string) {
     setDeletingId(id);
+    setErrorMsg(null);
     const supabase = createClient();
-    await supabase.from("todos").delete().eq("id", id);
+
+    const { error } = await supabase
+      .from("todos")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", userId);
+
     setDeletingId(null);
     setConfirmDeleteId(null);
+
+    if (error) {
+      setErrorMsg("Failed to delete task. Please try again.");
+      return;
+    }
+
     router.refresh();
   }
 
@@ -291,6 +315,24 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
         </form>
       )}
 
+      {/* Error Message */}
+      {errorMsg && (
+        <div
+          role="alert"
+          className="mb-4 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+        >
+          <span>{errorMsg}</span>
+          <button
+            type="button"
+            onClick={() => setErrorMsg(null)}
+            className="ml-3 shrink-0 rounded-lg p-1 text-red-500 hover:bg-red-100 transition-colors"
+            aria-label="Dismiss error"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
       {/* Filter Controls */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
         {filterOptions.map((opt) => (
@@ -299,7 +341,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
             type="button"
             onClick={() => setFilter(opt.value)}
             className={cn(
-              "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+              "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-maroon-900/30 focus-visible:ring-offset-2 focus:outline-none",
               filter === opt.value
                 ? "bg-maroon-900 text-white"
                 : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900"
