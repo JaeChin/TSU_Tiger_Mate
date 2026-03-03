@@ -43,7 +43,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       {/* Back Link */}
       <Link
         href="/dashboard/events"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-surface-600 hover:text-maroon-900 transition-colors"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-surface-600 dark:text-[#A0A0A0] hover:text-maroon-900 dark:hover:text-maroon-300 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         Back to Events
@@ -53,7 +53,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         {/* Header */}
         <div className="flex items-start gap-4 sm:gap-5">
           {/* Date Block */}
-          <div className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-maroon-100 text-maroon-900">
+          <div className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-xl bg-maroon-100 dark:bg-maroon-900/30 text-maroon-900 dark:text-maroon-200">
             <span className="text-xs font-semibold uppercase leading-none">
               {month}
             </span>
@@ -62,7 +62,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
           <div className="min-w-0 flex-1">
             <div className="flex items-start gap-2">
-              <h1 className="text-xl font-bold text-maroon-950 sm:text-2xl leading-snug">
+              <h1 className="text-xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-2xl leading-snug">
                 {event.title}
               </h1>
               {event.is_featured && (
@@ -84,27 +84,27 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
         {/* Details Grid */}
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <div className="flex items-start gap-3 rounded-xl bg-surface-50 p-4">
+          <div className="flex items-start gap-3 rounded-xl bg-surface-50 dark:bg-[#252525] p-4">
             <Calendar
-              className="mt-0.5 h-5 w-5 shrink-0 text-maroon-900"
+              className="mt-0.5 h-5 w-5 shrink-0 text-maroon-900 dark:text-maroon-300"
               aria-hidden="true"
             />
             <div>
-              <p className="text-sm font-medium text-surface-900">Date</p>
-              <p className="text-sm text-surface-600">
+              <p className="text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">Date</p>
+              <p className="text-sm text-surface-600 dark:text-[#A0A0A0]">
                 {weekday}, {formatDate(event.start_time)}
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3 rounded-xl bg-surface-50 p-4">
+          <div className="flex items-start gap-3 rounded-xl bg-surface-50 dark:bg-[#252525] p-4">
             <Clock
-              className="mt-0.5 h-5 w-5 shrink-0 text-maroon-900"
+              className="mt-0.5 h-5 w-5 shrink-0 text-maroon-900 dark:text-maroon-300"
               aria-hidden="true"
             />
             <div>
-              <p className="text-sm font-medium text-surface-900">Time</p>
-              <p className="text-sm text-surface-600">
+              <p className="text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">Time</p>
+              <p className="text-sm text-surface-600 dark:text-[#A0A0A0]">
                 {formatTime(event.start_time)}
                 {event.end_time && <> &ndash; {formatTime(event.end_time)}</>}
               </p>
@@ -112,14 +112,14 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           </div>
 
           {event.location && (
-            <div className="flex items-start gap-3 rounded-xl bg-surface-50 p-4">
+            <div className="flex items-start gap-3 rounded-xl bg-surface-50 dark:bg-[#252525] p-4">
               <MapPin
-                className="mt-0.5 h-5 w-5 shrink-0 text-maroon-900"
+                className="mt-0.5 h-5 w-5 shrink-0 text-maroon-900 dark:text-maroon-300"
                 aria-hidden="true"
               />
               <div>
-                <p className="text-sm font-medium text-surface-900">Location</p>
-                <p className="text-sm text-surface-600">{event.location}</p>
+                <p className="text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">Location</p>
+                <p className="text-sm text-surface-600 dark:text-[#A0A0A0]">{event.location}</p>
               </div>
             </div>
           )}
@@ -128,10 +128,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         {/* Description */}
         {event.description && (
           <div className="mt-6">
-            <h2 className="text-base font-semibold text-surface-900">
+            <h2 className="text-base font-semibold text-surface-900 dark:text-[#F5F5F5]">
               About this event
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-surface-600 whitespace-pre-wrap">
+            <p className="mt-2 text-sm leading-relaxed text-surface-600 dark:text-[#A0A0A0] whitespace-pre-wrap">
               {event.description}
             </p>
           </div>

@@ -184,10 +184,10 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
       {/* Header Row */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-maroon-950 sm:text-3xl">
+          <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-3xl">
             My To-Dos
           </h1>
-          <p className="mt-1 text-surface-600">
+          <p className="mt-1 text-surface-600 dark:text-[#A0A0A0]">
             Stay organized and on track
           </p>
         </div>
@@ -210,7 +210,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
           <div>
             <label
               htmlFor="todo-title"
-              className="block text-sm font-medium text-surface-700 mb-1.5"
+              className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5"
             >
               Title
             </label>
@@ -230,7 +230,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
             <div>
               <label
                 htmlFor="todo-category"
-                className="block text-sm font-medium text-surface-700 mb-1.5"
+                className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5"
               >
                 Category
               </label>
@@ -251,7 +251,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
             <div>
               <label
                 htmlFor="todo-priority"
-                className="block text-sm font-medium text-surface-700 mb-1.5"
+                className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5"
               >
                 Priority
               </label>
@@ -272,7 +272,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
             <div>
               <label
                 htmlFor="todo-due"
-                className="block text-sm font-medium text-surface-700 mb-1.5"
+                className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5"
               >
                 Due date
               </label>
@@ -319,13 +319,13 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
       {errorMsg && (
         <div
           role="alert"
-          className="mb-4 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          className="mb-4 flex items-center justify-between rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-700 dark:text-red-300"
         >
           <span>{errorMsg}</span>
           <button
             type="button"
             onClick={() => setErrorMsg(null)}
-            className="ml-3 shrink-0 rounded-lg p-1 text-red-500 hover:bg-red-100 transition-colors"
+            className="ml-3 shrink-0 rounded-lg p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
             aria-label="Dismiss error"
           >
             <X className="h-4 w-4" aria-hidden="true" />
@@ -344,14 +344,14 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
               "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-maroon-900/30 focus-visible:ring-offset-2 focus:outline-none",
               filter === opt.value
                 ? "bg-maroon-900 text-white"
-                : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900"
+                : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900 dark:bg-[#1A1A1A] dark:text-[#A0A0A0] dark:border-[#2A2A2A] dark:hover:bg-[#252525] dark:hover:text-[#F5F5F5]"
             )}
           >
             {opt.label}
           </button>
         ))}
 
-        <label className="ml-auto flex items-center gap-2 text-sm text-surface-600 cursor-pointer select-none">
+        <label className="ml-auto flex items-center gap-2 text-sm text-surface-600 dark:text-[#A0A0A0] cursor-pointer select-none">
           <input
             type="checkbox"
             checked={hideCompleted}
@@ -386,7 +386,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
                     "flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors",
                     isCompleted
                       ? "border-maroon-900 bg-maroon-900"
-                      : "border-surface-300 hover:border-maroon-900"
+                      : "border-surface-300 dark:border-surface-600 hover:border-maroon-900"
                   )}
                   aria-label={
                     isCompleted
@@ -425,15 +425,15 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
                 <div className="min-w-0 flex-1">
                   <p
                     className={cn(
-                      "text-sm font-medium text-surface-900",
-                      isCompleted && "line-through text-surface-500"
+                      "text-sm font-medium text-surface-900 dark:text-[#F5F5F5]",
+                      isCompleted && "line-through text-surface-500 dark:text-surface-600"
                     )}
                   >
                     {todo.title}
                   </p>
                   <div className="mt-0.5 flex flex-wrap items-center gap-2">
                     {todo.due_date && (
-                      <span className="text-xs text-surface-500">
+                      <span className="text-xs text-surface-500 dark:text-[#A0A0A0]">
                         Due {formatDate(todo.due_date)}
                       </span>
                     )}
@@ -457,7 +457,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
                       type="button"
                       onClick={() => handleDelete(todo.id)}
                       disabled={deletingId === todo.id}
-                      className="rounded-lg p-1.5 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                      className="rounded-lg p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
                       aria-label="Confirm delete"
                     >
                       {deletingId === todo.id ? (
@@ -472,7 +472,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
                     <button
                       type="button"
                       onClick={() => setConfirmDeleteId(null)}
-                      className="rounded-lg p-1.5 text-surface-500 hover:bg-surface-100 transition-colors"
+                      className="rounded-lg p-1.5 text-surface-500 hover:bg-surface-100 dark:hover:bg-[#252525] transition-colors"
                       aria-label="Cancel delete"
                     >
                       <X className="h-4 w-4" aria-hidden="true" />
@@ -482,7 +482,7 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
                   <button
                     type="button"
                     onClick={() => setConfirmDeleteId(todo.id)}
-                    className="shrink-0 rounded-lg p-1.5 text-surface-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    className="shrink-0 rounded-lg p-1.5 text-surface-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                     aria-label={`Delete "${todo.title}"`}
                   >
                     <Trash2 className="h-4 w-4" aria-hidden="true" />
@@ -494,17 +494,17 @@ export function TodoManager({ todos, userId }: TodoManagerProps) {
         </ul>
       ) : (
         /* Empty State */
-        <div className="rounded-2xl border border-surface-200 bg-white py-16 text-center">
+        <div className="rounded-2xl border border-surface-200 dark:border-[#2A2A2A] bg-white dark:bg-[#1A1A1A] py-16 text-center">
           <CheckSquare
-            className="mx-auto h-10 w-10 text-surface-300"
+            className="mx-auto h-10 w-10 text-surface-300 dark:text-surface-600"
             aria-hidden="true"
           />
-          <h2 className="mt-3 text-lg font-semibold text-surface-900">
+          <h2 className="mt-3 text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
             {filter !== "all" || hideCompleted
               ? "No matching tasks"
               : "No tasks yet"}
           </h2>
-          <p className="mt-1 text-sm text-surface-500">
+          <p className="mt-1 text-sm text-surface-500 dark:text-[#A0A0A0]">
             {filter !== "all" || hideCompleted
               ? "Try changing your filters."
               : "Add your first to-do to get organized."}

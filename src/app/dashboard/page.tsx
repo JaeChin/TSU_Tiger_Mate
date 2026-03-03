@@ -10,6 +10,7 @@ import {
   Star,
   CircleDot,
   Plus,
+  UserCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getGreeting, formatDate, formatTime } from "@/lib/utils";
@@ -19,29 +20,29 @@ const quickActions = [
     href: "/dashboard/events",
     label: "Events",
     icon: Calendar,
-    bg: "bg-blue-50",
-    iconColor: "text-blue-600",
+    bg: "bg-blue-50 dark:bg-blue-900/20",
+    iconColor: "text-blue-600 dark:text-blue-400",
   },
   {
     href: "/dashboard/todos",
     label: "To-Dos",
     icon: CheckSquare,
-    bg: "bg-green-50",
-    iconColor: "text-green-600",
+    bg: "bg-green-50 dark:bg-green-900/20",
+    iconColor: "text-green-600 dark:text-green-400",
   },
   {
     href: "/dashboard/resources",
     label: "Resources",
     icon: MapPin,
-    bg: "bg-purple-50",
-    iconColor: "text-purple-600",
+    bg: "bg-purple-50 dark:bg-purple-900/20",
+    iconColor: "text-purple-600 dark:text-purple-400",
   },
   {
     href: "/dashboard/ask-mate",
     label: "Ask M.A.T.E",
     icon: MessageCircle,
-    bg: "bg-amber-50",
-    iconColor: "text-amber-600",
+    bg: "bg-amber-50 dark:bg-amber-900/20",
+    iconColor: "text-amber-600 dark:text-amber-400",
   },
 ] as const;
 
@@ -60,11 +61,16 @@ export default async function DashboardPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name")
+    .select("full_name, preferred_name, onboarding_complete")
     .eq("id", user!.id)
     .single();
 
-  const firstName = profile?.full_name?.split(" ")[0] || "Tiger";
+  const firstName =
+    profile?.preferred_name ||
+    profile?.full_name?.split(" ")[0] ||
+    "Tiger";
+
+  const onboardingComplete = profile?.onboarding_complete ?? false;
 
   // Fetch upcoming events (next 3 from now)
   const { data: events } = await supabase
@@ -92,7 +98,7 @@ export default async function DashboardPage() {
           -------------------------------------------------------- */}
       <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-maroon-900 to-maroon-950 px-6 py-8 sm:px-8 sm:py-10">
         <h1 className="relative z-10 text-2xl font-bold text-white sm:text-3xl">
-          {greeting}, {firstName} 🐅
+          {greeting}, {firstName}
         </h1>
         <p className="relative z-10 mt-2 text-maroon-200 text-sm sm:text-base">
           Here&apos;s what&apos;s happening on campus today.
@@ -110,6 +116,31 @@ export default async function DashboardPage() {
       </section>
 
       {/* --------------------------------------------------------
+          Complete Profile CTA (if onboarding not done)
+          -------------------------------------------------------- */}
+      {!onboardingComplete && (
+        <Link
+          href="/dashboard/onboarding"
+          className="mt-4 block"
+        >
+          <section className="card-hover flex items-center gap-4 border-gold-300 dark:border-gold-700 bg-gold-50 dark:bg-gold-900/20">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-100 dark:bg-gold-800/40">
+              <UserCircle className="h-5 w-5 text-gold-700 dark:text-gold-400" aria-hidden="true" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-surface-900 dark:text-[#F5F5F5]">
+                Complete Your Profile
+              </p>
+              <p className="text-xs text-surface-500 dark:text-[#A0A0A0]">
+                Tell us about yourself so we can personalize your experience.
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 shrink-0 text-surface-400" aria-hidden="true" />
+          </section>
+        </Link>
+      )}
+
+      {/* --------------------------------------------------------
           Quick Actions
           -------------------------------------------------------- */}
       <section className="mt-6" aria-label="Quick actions">
@@ -123,7 +154,7 @@ export default async function DashboardPage() {
               <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${action.bg}`}>
                 <action.icon className={`h-6 w-6 ${action.iconColor}`} aria-hidden="true" />
               </div>
-              <span className="text-sm font-medium text-surface-900">{action.label}</span>
+              <span className="text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">{action.label}</span>
             </Link>
           ))}
         </div>
@@ -136,12 +167,12 @@ export default async function DashboardPage() {
         {/* Upcoming Events */}
         <section className="card" aria-labelledby="upcoming-events-heading">
           <div className="flex items-center justify-between mb-4">
-            <h2 id="upcoming-events-heading" className="text-lg font-semibold text-surface-900">
+            <h2 id="upcoming-events-heading" className="text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
               Upcoming Events
             </h2>
             <Link
               href="/dashboard/events"
-              className="flex items-center gap-1 text-sm font-medium text-maroon-900 hover:text-maroon-700"
+              className="flex items-center gap-1 text-sm font-medium text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200"
             >
               View all
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -159,10 +190,10 @@ export default async function DashboardPage() {
                   <li key={event.id}>
                     <Link
                       href={`/dashboard/events/${event.id}`}
-                      className="flex items-start gap-4 rounded-xl p-3 transition-colors hover:bg-surface-50"
+                      className="flex items-start gap-4 rounded-xl p-3 transition-colors hover:bg-surface-50 dark:hover:bg-[#252525]"
                     >
                       {/* Date block */}
-                      <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-maroon-50 text-maroon-900">
+                      <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-maroon-50 dark:bg-maroon-900/30 text-maroon-900 dark:text-maroon-200">
                         <span className="text-[10px] font-semibold uppercase leading-none">
                           {month}
                         </span>
@@ -171,14 +202,14 @@ export default async function DashboardPage() {
 
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <p className="truncate text-sm font-medium text-surface-900">
+                          <p className="truncate text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">
                             {event.title}
                           </p>
                           {event.is_featured && (
                             <Star className="h-3.5 w-3.5 shrink-0 text-gold-500 fill-gold-500" aria-label="Featured event" />
                           )}
                         </div>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-surface-500">
+                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-surface-500 dark:text-[#A0A0A0]">
                           <span className="inline-flex items-center gap-1">
                             <Clock className="h-3 w-3" aria-hidden="true" />
                             {formatTime(event.start_time)}
@@ -197,9 +228,9 @@ export default async function DashboardPage() {
               })}
             </ul>
           ) : (
-            <div className="rounded-xl bg-surface-50 py-8 text-center">
-              <Calendar className="mx-auto h-8 w-8 text-surface-300" aria-hidden="true" />
-              <p className="mt-2 text-sm text-surface-500">No upcoming events</p>
+            <div className="rounded-xl bg-surface-50 dark:bg-[#252525] py-8 text-center">
+              <Calendar className="mx-auto h-8 w-8 text-surface-300 dark:text-surface-600" aria-hidden="true" />
+              <p className="mt-2 text-sm text-surface-500 dark:text-[#A0A0A0]">No upcoming events</p>
             </div>
           )}
         </section>
@@ -207,12 +238,12 @@ export default async function DashboardPage() {
         {/* My To-Dos */}
         <section className="card" aria-labelledby="my-todos-heading">
           <div className="flex items-center justify-between mb-4">
-            <h2 id="my-todos-heading" className="text-lg font-semibold text-surface-900">
+            <h2 id="my-todos-heading" className="text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
               My To-Dos
             </h2>
             <Link
               href="/dashboard/todos"
-              className="flex items-center gap-1 text-sm font-medium text-maroon-900 hover:text-maroon-700"
+              className="flex items-center gap-1 text-sm font-medium text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200"
             >
               View all
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -224,18 +255,18 @@ export default async function DashboardPage() {
               {todos.map((todo) => (
                 <li
                   key={todo.id}
-                  className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-surface-50"
+                  className="flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-surface-50 dark:hover:bg-[#252525]"
                 >
                   <CircleDot
                     className={`h-4 w-4 shrink-0 ${priorityTextColors[todo.priority] || "text-surface-400"}`}
                     aria-label={`${todo.priority} priority`}
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-surface-900">
+                    <p className="truncate text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">
                       {todo.title}
                     </p>
                     {todo.due_date && (
-                      <p className="text-xs text-surface-500 mt-0.5">
+                      <p className="text-xs text-surface-500 dark:text-[#A0A0A0] mt-0.5">
                         Due {formatDate(todo.due_date)}
                       </p>
                     )}
@@ -244,12 +275,12 @@ export default async function DashboardPage() {
               ))}
             </ul>
           ) : (
-            <div className="rounded-xl bg-surface-50 py-8 text-center">
-              <CheckSquare className="mx-auto h-8 w-8 text-surface-300" aria-hidden="true" />
-              <p className="mt-2 text-sm text-surface-500">No to-dos yet</p>
+            <div className="rounded-xl bg-surface-50 dark:bg-[#252525] py-8 text-center">
+              <CheckSquare className="mx-auto h-8 w-8 text-surface-300 dark:text-surface-600" aria-hidden="true" />
+              <p className="mt-2 text-sm text-surface-500 dark:text-[#A0A0A0]">No to-dos yet</p>
               <Link
                 href="/dashboard/todos"
-                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-maroon-900 hover:text-maroon-700"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200"
               >
                 <Plus className="h-4 w-4" aria-hidden="true" />
                 Add your first to-do

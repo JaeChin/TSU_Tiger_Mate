@@ -9,6 +9,7 @@ import {
   CheckSquare,
   MapPin,
   MessageCircle,
+  User,
   LogOut,
   Menu,
   X,
@@ -48,10 +49,12 @@ export function Sidebar({ userName }: SidebarProps) {
     return pathname.startsWith(href);
   }
 
+  const profileActive = pathname.startsWith("/dashboard/profile");
+
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="px-4 py-5 border-b border-surface-200">
+      <div className="px-4 py-5 border-b border-surface-200 dark:border-[#2A2A2A]">
         <Link href="/dashboard" aria-label="Dashboard home">
           <Logo size="sm" />
         </Link>
@@ -70,7 +73,7 @@ export function Sidebar({ userName }: SidebarProps) {
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                 active
                   ? "bg-maroon-900 text-white"
-                  : "text-surface-600 hover:bg-surface-100 hover:text-surface-900"
+                  : "text-surface-600 hover:bg-surface-100 hover:text-surface-900 dark:text-[#A0A0A0] dark:hover:bg-[#252525] dark:hover:text-[#F5F5F5]"
               )}
               aria-current={active ? "page" : undefined}
             >
@@ -81,13 +84,31 @@ export function Sidebar({ userName }: SidebarProps) {
         })}
       </nav>
 
+      {/* Profile + Sign Out */}
+      <div className="border-t border-surface-200 dark:border-[#2A2A2A] px-3 py-3">
+        <Link
+          href="/dashboard/profile"
+          onClick={() => setMobileOpen(false)}
+          className={cn(
+            "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+            profileActive
+              ? "bg-maroon-900 text-white"
+              : "text-surface-600 hover:bg-surface-100 hover:text-surface-900 dark:text-[#A0A0A0] dark:hover:bg-[#252525] dark:hover:text-[#F5F5F5]"
+          )}
+          aria-current={profileActive ? "page" : undefined}
+        >
+          <User className="h-5 w-5 shrink-0" aria-hidden="true" />
+          Profile
+        </Link>
+      </div>
+
       {/* User + Sign Out */}
-      <div className="border-t border-surface-200 px-4 py-4">
-        <p className="truncate text-sm font-medium text-surface-900">{userName}</p>
+      <div className="border-t border-surface-200 dark:border-[#2A2A2A] px-4 py-4">
+        <p className="truncate text-sm font-medium text-surface-900 dark:text-[#F5F5F5]">{userName}</p>
         <button
           type="button"
           onClick={handleSignOut}
-          className="mt-2 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-surface-500 transition-colors hover:bg-surface-100 hover:text-surface-900"
+          className="mt-2 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-surface-500 transition-colors hover:bg-surface-100 hover:text-surface-900 dark:text-[#A0A0A0] dark:hover:bg-[#252525] dark:hover:text-[#F5F5F5]"
         >
           <LogOut className="h-4 w-4" aria-hidden="true" />
           Sign out
@@ -102,10 +123,10 @@ export function Sidebar({ userName }: SidebarProps) {
       <button
         type="button"
         onClick={() => setMobileOpen(true)}
-        className="fixed top-3 left-3 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-surface-200 shadow-sm lg:hidden"
+        className="fixed top-3 left-3 z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-[#1A1A1A] border border-surface-200 dark:border-[#2A2A2A] shadow-sm lg:hidden"
         aria-label="Open navigation menu"
       >
-        <Menu className="h-5 w-5 text-surface-700" aria-hidden="true" />
+        <Menu className="h-5 w-5 text-surface-700 dark:text-[#A0A0A0]" aria-hidden="true" />
       </button>
 
       {/* Mobile overlay */}
@@ -120,7 +141,7 @@ export function Sidebar({ userName }: SidebarProps) {
       {/* Mobile sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-white border-r border-surface-200 transition-transform duration-200 lg:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-white dark:bg-[#1A1A1A] border-r border-surface-200 dark:border-[#2A2A2A] transition-transform duration-200 lg:hidden",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
         aria-label="Sidebar navigation"
@@ -128,17 +149,17 @@ export function Sidebar({ userName }: SidebarProps) {
         <button
           type="button"
           onClick={() => setMobileOpen(false)}
-          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-lg hover:bg-surface-100"
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-lg hover:bg-surface-100 dark:hover:bg-[#252525]"
           aria-label="Close navigation menu"
         >
-          <X className="h-5 w-5 text-surface-500" aria-hidden="true" />
+          <X className="h-5 w-5 text-surface-500 dark:text-[#A0A0A0]" aria-hidden="true" />
         </button>
         {sidebarContent}
       </aside>
 
       {/* Desktop sidebar — always visible */}
       <aside
-        className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-surface-200 lg:bg-white"
+        className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-surface-200 dark:lg:border-[#2A2A2A] lg:bg-white dark:lg:bg-[#1A1A1A]"
         aria-label="Sidebar navigation"
       >
         {sidebarContent}

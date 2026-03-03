@@ -44,10 +44,10 @@ export function Logo({ size = "md", showText = true, className }: LogoProps) {
 
       {showText && (
         <span className="flex flex-col leading-none">
-          <span className={cn("font-display font-bold text-maroon-900 tracking-tight", s.name)}>
+          <span className={cn("font-display font-bold text-maroon-900 dark:text-maroon-200 tracking-tight", s.name)}>
             Tiger M.A.T.E
           </span>
-          <span className={cn("text-surface-500 font-body", s.subtitle)}>
+          <span className={cn("text-surface-500 dark:text-[#A0A0A0] font-body", s.subtitle)}>
             My Academic Transition Experience
           </span>
         </span>

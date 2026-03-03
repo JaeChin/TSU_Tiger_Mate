@@ -44,6 +44,8 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/resources") ||
     pathname.startsWith("/todos") ||
     pathname.startsWith("/ask");
+  const isOnboardingPage = pathname === "/dashboard/onboarding";
+  const isProfilePage = pathname.startsWith("/dashboard/profile");
 
   // Dev bypass — skip auth redirects entirely
   if (DEV_BYPASS) {
@@ -62,6 +64,36 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);
+  }
+
+  // Onboarding check — only for authenticated users on dashboard pages
+  if (user && isDashboardPage && !isOnboardingPage && !isProfilePage) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarding_complete")
+      .eq("id", user.id)
+      .single();
+
+    if (profile && profile.onboarding_complete === false) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard/onboarding";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // If onboarding is complete and user is on onboarding page, redirect to dashboard
+  if (user && isOnboardingPage) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("onboarding_complete")
+      .eq("id", user.id)
+      .single();
+
+    if (profile && profile.onboarding_complete === true) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

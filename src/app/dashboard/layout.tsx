@@ -32,7 +32,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-surface-50">
+    <div className="min-h-screen bg-surface-50 dark:bg-[#0F0F0F]">
       <Sidebar userName={userName} />
 
       <main className="lg:ml-64">

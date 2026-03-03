@@ -47,10 +47,10 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
     <>
       {/* Page Header */}
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-maroon-950 sm:text-3xl">
+        <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-3xl">
           Campus Events
         </h1>
-        <p className="mt-1 text-surface-600">
+        <p className="mt-1 text-surface-600 dark:text-[#A0A0A0]">
           Discover what&apos;s happening at TSU
         </p>
       </header>
@@ -76,7 +76,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
                   "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-maroon-900/30 focus-visible:ring-offset-2 focus:outline-none",
                   isActive
                     ? "bg-maroon-900 text-white"
-                    : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900"
+                    : "bg-white text-surface-600 border border-surface-200 hover:bg-surface-50 hover:text-surface-900 dark:bg-[#1A1A1A] dark:text-[#A0A0A0] dark:border-[#2A2A2A] dark:hover:bg-[#252525] dark:hover:text-[#F5F5F5]"
                 )}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -87,7 +87,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
         </nav>
         {/* Scroll overflow hint — right gradient fade */}
         <div
-          className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent sm:hidden"
+          className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-surface-50 dark:from-[#0F0F0F] to-transparent sm:hidden"
           aria-hidden="true"
         />
       </div>
@@ -105,7 +105,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
             return (
               <article key={event.id} className="card-hover flex gap-4">
                 {/* Date Block */}
-                <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-maroon-100 text-maroon-900">
+                <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-maroon-100 dark:bg-maroon-900/30 text-maroon-900 dark:text-maroon-200">
                   <span className="text-[10px] font-semibold uppercase leading-none">
                     {month}
                   </span>
@@ -118,7 +118,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
                 <div className="min-w-0 flex-1">
                   {/* Title Row */}
                   <div className="flex items-start gap-2">
-                    <h2 className="text-base font-semibold text-surface-900 leading-snug">
+                    <h2 className="text-base font-semibold text-surface-900 dark:text-[#F5F5F5] leading-snug">
                       {event.title}
                     </h2>
                     {event.is_featured && (
@@ -131,13 +131,13 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
 
                   {/* Description */}
                   {event.description && (
-                    <p className="mt-1 text-sm text-surface-500 line-clamp-2">
+                    <p className="mt-1 text-sm text-surface-500 dark:text-[#A0A0A0] line-clamp-2">
                       {event.description}
                     </p>
                   )}
 
                   {/* Meta Row */}
-                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-surface-500">
+                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-surface-500 dark:text-[#A0A0A0]">
                     <span className="inline-flex items-center gap-1">
                       <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                       {formatTime(event.start_time)}
@@ -169,15 +169,15 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
         </div>
       ) : (
         /* Empty State */
-        <div className="rounded-2xl border border-surface-200 bg-white py-16 text-center">
+        <div className="rounded-2xl border border-surface-200 dark:border-[#2A2A2A] bg-white dark:bg-[#1A1A1A] py-16 text-center">
           <Calendar
-            className="mx-auto h-10 w-10 text-surface-300"
+            className="mx-auto h-10 w-10 text-surface-300 dark:text-surface-600"
             aria-hidden="true"
           />
-          <h2 className="mt-3 text-lg font-semibold text-surface-900">
+          <h2 className="mt-3 text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
             No events found
           </h2>
-          <p className="mt-1 text-sm text-surface-500">
+          <p className="mt-1 text-sm text-surface-500 dark:text-[#A0A0A0]">
             {activeCategory !== "all"
               ? `There are no ${activeCategory} events right now. Try a different category.`
               : "Check back soon for upcoming campus events."}

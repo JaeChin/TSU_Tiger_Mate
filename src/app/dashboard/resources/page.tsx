@@ -13,10 +13,10 @@ export default async function ResourcesPage() {
     <>
       {/* Page Header */}
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-maroon-950 sm:text-3xl">
+        <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-3xl">
           Campus Resources
         </h1>
-        <p className="mt-1 text-surface-600">
+        <p className="mt-1 text-surface-600 dark:text-[#A0A0A0]">
           Every office, service, and support center in one place
         </p>
       </header>

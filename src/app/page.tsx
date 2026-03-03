@@ -16,10 +16,6 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
-/* ============================================================
-   Landing Page — Tiger M.A.T.E Marketing Site
-   ============================================================ */
-
 const features = [
   {
     icon: LayoutDashboard,
@@ -107,7 +103,7 @@ export default function LandingPage() {
       {/* --------------------------------------------------------
           Navigation
           -------------------------------------------------------- */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-surface-100">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#0F0F0F]/90 backdrop-blur-md border-b border-surface-100 dark:border-[#2A2A2A]">
         <nav
           className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8"
           aria-label="Main navigation"
@@ -131,15 +127,15 @@ export default function LandingPage() {
         {/* --------------------------------------------------------
             Hero Section
             -------------------------------------------------------- */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-maroon-50/60 to-white pt-32 pb-20 sm:pt-40 sm:pb-28">
+        <section className="relative overflow-hidden bg-gradient-to-b from-maroon-50/60 dark:from-maroon-950/30 to-white dark:to-[#0F0F0F] pt-32 pb-20 sm:pt-40 sm:pb-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <span className="badge-campus mb-6 inline-flex">
               Built for TSU Tigers
             </span>
 
-            <h1 className="text-4xl font-bold tracking-tight text-maroon-950 sm:text-5xl lg:text-6xl text-balance">
+            <h1 className="text-4xl font-bold tracking-tight text-maroon-950 dark:text-[#F5F5F5] sm:text-5xl lg:text-6xl text-balance">
               Your guide from{" "}
-              <span className="text-maroon-900">day one</span> to{" "}
+              <span className="text-maroon-900 dark:text-maroon-300">day one</span> to{" "}
               <span className="relative inline-block">
                 <span className="relative z-10">graduation</span>
                 <span
@@ -149,7 +145,7 @@ export default function LandingPage() {
               </span>
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-surface-600 text-balance">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-surface-600 dark:text-[#A0A0A0] text-balance">
               Tiger M.A.T.E replaces 10 scattered portals with one intelligent
               platform. Events, resources, tasks, and an AI assistant — all
               built for the TSU student experience.
@@ -179,16 +175,16 @@ export default function LandingPage() {
         {/* --------------------------------------------------------
             Problem Section
             -------------------------------------------------------- */}
-        <section className="py-20 sm:py-28 bg-white" aria-labelledby="problem-heading">
+        <section className="py-20 sm:py-28 bg-white dark:bg-[#0F0F0F]" aria-labelledby="problem-heading">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2
                 id="problem-heading"
-                className="text-3xl font-bold text-maroon-950 sm:text-4xl"
+                className="text-3xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-4xl"
               >
                 The problem is real
               </h2>
-              <p className="mt-4 text-lg text-surface-600 max-w-2xl mx-auto text-balance">
+              <p className="mt-4 text-lg text-surface-600 dark:text-[#A0A0A0] max-w-2xl mx-auto text-balance">
                 Students arrive excited — then hit a wall of disconnected
                 systems, missing info, and zero guidance.
               </p>
@@ -197,19 +193,19 @@ export default function LandingPage() {
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {stats.map((stat) => (
                 <article key={stat.value} className="card-hover text-center">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-maroon-100">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-maroon-100 dark:bg-maroon-900/30">
                     <stat.icon
-                      className="h-6 w-6 text-maroon-900"
+                      className="h-6 w-6 text-maroon-900 dark:text-maroon-300"
                       aria-hidden="true"
                     />
                   </div>
-                  <p className="mt-5 text-4xl font-bold text-maroon-900 font-display">
+                  <p className="mt-5 text-4xl font-bold text-maroon-900 dark:text-maroon-300 font-display">
                     {stat.value}
                   </p>
-                  <p className="mt-2 font-medium text-surface-900">
+                  <p className="mt-2 font-medium text-surface-900 dark:text-[#F5F5F5]">
                     {stat.label}
                   </p>
-                  <p className="mt-2 text-sm text-surface-500">{stat.detail}</p>
+                  <p className="mt-2 text-sm text-surface-500 dark:text-[#A0A0A0]">{stat.detail}</p>
                 </article>
               ))}
             </div>
@@ -220,18 +216,18 @@ export default function LandingPage() {
             Features Section
             -------------------------------------------------------- */}
         <section
-          className="py-20 sm:py-28 bg-surface-50"
+          className="py-20 sm:py-28 bg-surface-50 dark:bg-[#1A1A1A]"
           aria-labelledby="features-heading"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2
                 id="features-heading"
-                className="text-3xl font-bold text-maroon-950 sm:text-4xl"
+                className="text-3xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-4xl"
               >
                 Everything a Tiger needs
               </h2>
-              <p className="mt-4 text-lg text-surface-600 max-w-2xl mx-auto text-balance">
+              <p className="mt-4 text-lg text-surface-600 dark:text-[#A0A0A0] max-w-2xl mx-auto text-balance">
                 Six tools designed around how students actually navigate campus
                 life.
               </p>
@@ -240,16 +236,16 @@ export default function LandingPage() {
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature) => (
                 <article key={feature.title} className="card-hover">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-100">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold-100 dark:bg-gold-900/30">
                     <feature.icon
-                      className="h-6 w-6 text-gold-700"
+                      className="h-6 w-6 text-gold-700 dark:text-gold-400"
                       aria-hidden="true"
                     />
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold text-surface-900">
+                  <h3 className="mt-4 text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
                     {feature.title}
                   </h3>
-                  <p className="mt-2 text-surface-600 text-sm leading-relaxed">
+                  <p className="mt-2 text-surface-600 dark:text-[#A0A0A0] text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </article>
@@ -306,15 +302,15 @@ export default function LandingPage() {
         {/* --------------------------------------------------------
             CTA Section
             -------------------------------------------------------- */}
-        <section className="py-20 sm:py-28 bg-white" aria-labelledby="cta-heading">
+        <section className="py-20 sm:py-28 bg-white dark:bg-[#0F0F0F]" aria-labelledby="cta-heading">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
             <h2
               id="cta-heading"
-              className="text-3xl font-bold text-maroon-950 sm:text-4xl"
+              className="text-3xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-4xl"
             >
               Ready to meet your M.A.T.E?
             </h2>
-            <p className="mt-4 text-lg text-surface-600 text-balance">
+            <p className="mt-4 text-lg text-surface-600 dark:text-[#A0A0A0] text-balance">
               Sign up with your TSU email and get instant access to your
               personalized campus dashboard.
             </p>
@@ -331,12 +327,12 @@ export default function LandingPage() {
       {/* --------------------------------------------------------
           Footer
           -------------------------------------------------------- */}
-      <footer className="border-t border-surface-200 bg-surface-50 py-10">
+      <footer className="border-t border-surface-200 dark:border-[#2A2A2A] bg-surface-50 dark:bg-[#1A1A1A] py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
             <Logo size="sm" />
-            <p className="text-sm text-surface-500 text-center">
-              Built with 🐅 for Texas Southern University
+            <p className="text-sm text-surface-500 dark:text-[#A0A0A0] text-center">
+              Built with pride for Texas Southern University
             </p>
           </div>
         </div>

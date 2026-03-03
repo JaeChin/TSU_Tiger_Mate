@@ -52,15 +52,15 @@ export default function ForgotPasswordPage() {
   if (success) {
     return (
       <section className="card p-8 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold-100">
-          <Mail className="h-7 w-7 text-gold-600" aria-hidden="true" />
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold-100 dark:bg-gold-900/30">
+          <Mail className="h-7 w-7 text-gold-600 dark:text-gold-400" aria-hidden="true" />
         </div>
-        <h1 className="mt-5 text-2xl font-bold text-maroon-950">
+        <h1 className="mt-5 text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5]">
           Check your inbox!
         </h1>
-        <p className="mt-3 text-sm text-surface-600 leading-relaxed">
+        <p className="mt-3 text-sm text-surface-600 dark:text-[#A0A0A0] leading-relaxed">
           If an account exists for{" "}
-          <strong className="text-surface-900">{email.trim()}</strong>, we sent a
+          <strong className="text-surface-900 dark:text-[#F5F5F5]">{email.trim()}</strong>, we sent a
           password reset link. Check your email and follow the instructions.
         </p>
         <Link href="/login" className="btn-primary mt-8 w-full">
@@ -72,26 +72,26 @@ export default function ForgotPasswordPage() {
 
   return (
     <section className="card p-8">
-      <h1 className="text-2xl font-bold text-maroon-950 text-center">
+      <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] text-center">
         Reset your password
       </h1>
-      <p className="mt-2 text-sm text-surface-500 text-center">
+      <p className="mt-2 text-sm text-surface-500 dark:text-[#A0A0A0] text-center">
         Enter your .edu email and we&apos;ll send you a reset link.
       </p>
 
       {error && (
         <div
           role="alert"
-          className="mt-6 flex items-start gap-3 rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-800"
+          className="mt-6 flex items-start gap-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-800 dark:text-red-300"
         >
-          <AlertCircle className="h-5 w-5 shrink-0 text-red-600" aria-hidden="true" />
+          <AlertCircle className="h-5 w-5 shrink-0 text-red-600 dark:text-red-400" aria-hidden="true" />
           <p>{error}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-surface-700 mb-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
             Email
           </label>
           <input
@@ -122,9 +122,9 @@ export default function ForgotPasswordPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-surface-500">
+      <p className="mt-6 text-center text-sm text-surface-500 dark:text-[#A0A0A0]">
         Remember your password?{" "}
-        <Link href="/login" className="font-medium text-maroon-900 hover:text-maroon-700">
+        <Link href="/login" className="font-medium text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200">
           Sign in
         </Link>
       </p>

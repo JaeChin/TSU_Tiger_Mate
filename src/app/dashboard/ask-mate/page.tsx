@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, type FormEvent } from "react";
 import { MessageCircle, Send, Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -10,74 +11,64 @@ interface Message {
   content: string;
 }
 
+interface StudentProfile {
+  preferred_name: string;
+  major: string;
+  classification: string;
+  college: string;
+  interests: string[];
+  career_goals: string[];
+  involvement: string[];
+}
+
 const suggestedPrompts = [
-  "What resources are available for freshmen?",
-  "Help me plan my first semester",
-  "Where can I get financial aid help?",
-  "What events are happening this week?",
+  "What events match my interests?",
+  "Help me plan my semester",
+  "Where do I find tutoring for my major?",
+  "What career resources are available?",
+  "Tell me about student organizations",
+  "How do I get involved on campus?",
 ] as const;
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
-function getSimulatedResponse(input: string): string {
-  const lower = input.toLowerCase();
-
-  if (lower.includes("financial aid") || lower.includes("fafsa") || lower.includes("scholarship")) {
-    return "Great question! The Office of Financial Aid is located in the Bell Building, 2nd Floor. They can help with FAFSA applications, scholarships, grants, and work-study programs. You can reach them at (713) 313-7071 or email financialaid@tsu.edu. Hours are Mon-Fri 8:00 AM - 5:00 PM.\n\nThere's also a FAFSA & Financial Aid Workshop coming up — check the Events page for the latest date and time. Make sure to bring your FSA ID and tax documents!";
-  }
-
-  if (lower.includes("freshmen") || lower.includes("freshman") || lower.includes("new student") || lower.includes("first year")) {
-    return "Welcome to the TSU family! Here are the top resources for freshmen:\n\n1. **Academic Advising Center** — MLK Building, Suite 105. Get help with course selection and degree planning.\n2. **Tutoring Center** — Library Learning Center, 3rd Floor. Free peer tutoring in math, science, English, and more.\n3. **Counseling Center** — Sterling Student Life Center, Suite 230. Free, confidential mental health services.\n4. **New Tiger Orientation** — Check the Events page for the next orientation session.\n\nDon't hesitate to visit any of these offices — they're here specifically to help you succeed!";
-  }
-
-  if (lower.includes("semester") || lower.includes("plan") || lower.includes("schedule") || lower.includes("classes") || lower.includes("course")) {
-    return "Here's how to plan a solid first semester at TSU:\n\n1. **Meet with your advisor** at the Academic Advising Center (MLK Building, Suite 105) to map out your required courses.\n2. **Check your degree audit** on the myTSU portal to see what credits you still need.\n3. **Balance your load** — 15 credit hours is standard. Mix harder courses with lighter ones.\n4. **Use the To-Do Manager** right here in Tiger M.A.T.E to track your deadlines and assignments.\n5. **Register early** — priority registration dates are announced each semester. Check the Events page for info sessions.\n\nNeed help with a specific major or department? Just ask!";
-  }
-
-  if (lower.includes("event") || lower.includes("happening") || lower.includes("activities") || lower.includes("things to do")) {
-    return "There's always something happening on campus! Check the **Events** page in your dashboard for the full list. Here are some highlights:\n\n- **Tiger Fest** — TSU's biggest back-to-school celebration with live music, free food, and giveaways.\n- **Fall Career Fair** — Over 75 employers recruiting TSU students for internships and jobs.\n- **Homecoming Week** — Step show, concert, and more.\n- **Midterm Study Jam** — Free tutoring and study spaces during midterm season.\n\nYou can filter events by category (academic, social, sports, career, health) to find what interests you most.";
-  }
-
-  if (lower.includes("tutor") || lower.includes("study") || lower.includes("help with class") || lower.includes("academic support")) {
-    return "TSU has excellent academic support! The **Tutoring & Academic Support Center** is on the 3rd Floor of the Library Learning Center. They offer:\n\n- Free peer tutoring in math, science, English, and more\n- Drop-in tutoring and scheduled appointments\n- Study groups for popular courses\n\nHours: Mon-Thu 9:00 AM - 7:00 PM, Fri 9:00 AM - 3:00 PM. Call (713) 313-1843 or email tutoring@tsu.edu.\n\nAlso check out the **Midterm Study Jam** events — free tutoring, snacks, and quiet study spaces during midterm week!";
-  }
-
-  if (lower.includes("health") || lower.includes("sick") || lower.includes("doctor") || lower.includes("mental health") || lower.includes("counseling")) {
-    return "TSU has you covered for both physical and mental health:\n\n**Student Health Center** — Health & Wellness Building, 3100 Cleburne St. Primary care, immunizations, and pharmacy services. Most services are free or low-cost. Call (713) 313-7173.\n\n**Counseling Center** — Sterling Student Life Center, Suite 230. Free, confidential mental health services including individual counseling, group therapy, and crisis intervention. No insurance needed. Call (713) 313-7804.\n\nBoth are open Mon-Fri 8:00 AM - 5:00 PM. For emergencies, call TSU Police at (713) 313-7000 (available 24/7).";
-  }
-
-  if (lower.includes("housing") || lower.includes("dorm") || lower.includes("roommate") || lower.includes("apartment")) {
-    return "The **Office of Residential Life & Housing** handles everything housing-related. They're located at University Courtyard Apartments, Leasing Office. Contact them at (713) 313-4968 or housing@tsu.edu.\n\nThey can help with:\n- On-campus housing applications\n- Room assignments and roommate requests\n- Maintenance requests\n- Residence life programming\n\nHours: Mon-Fri 8:00 AM - 5:00 PM. Apply early — on-campus housing fills up fast!";
-  }
-
-  if (lower.includes("career") || lower.includes("job") || lower.includes("internship") || lower.includes("resume")) {
-    return "The **Career Services Center** is your go-to for professional development! Located in MLK Building, Room 108. Contact: (713) 313-7225 or careers@tsu.edu.\n\nThey offer:\n- Resume reviews and building\n- Mock interviews\n- Internship and job postings\n- Career fairs (the Fall Career Fair has 75+ employers!)\n- LinkedIn profile optimization workshops\n\nCheck the Events page for upcoming career workshops and the Fall Career Fair date. Start building your career from day one — it's never too early!";
-  }
-
-  if (lower.includes("food") || lower.includes("hungry") || lower.includes("eat") || lower.includes("meal") || lower.includes("dining")) {
-    return "No Tiger goes hungry! Here's what's available:\n\n**Tiger Food Pantry** — Sterling Student Life Center, Room 139. Free groceries and meal assistance. Confidential — just bring your TSU ID. Open Mon, Wed, Fri 10:00 AM - 2:00 PM. Call (713) 313-4968.\n\nThe campus also has various dining options in the Sterling Student Life Center and surrounding area. Your meal plan (if you have one) can be managed through the myTSU portal.";
-  }
-
-  if (lower.includes("safety") || lower.includes("police") || lower.includes("emergency") || lower.includes("security")) {
-    return "**TSU Police Department** is available 24/7 for your safety. They're located at the Public Safety Building, 3200 Cleburne St.\n\n- **Emergency:** Call (713) 313-7000\n- **Email:** police@tsu.edu\n\nServices include:\n- Emergency response\n- Campus escorts (great for late-night walks)\n- Lost property\n- Incident reports\n\n**Save this number in your phone right now:** (713) 313-7000. It's the most important number for any TSU student to have.";
-  }
-
-  if (lower.includes("tech") || lower.includes("wifi") || lower.includes("password") || lower.includes("blackboard") || lower.includes("computer")) {
-    return "The **IT Help Desk** can solve your tech issues! Located on the 1st Floor of the Library Learning Center.\n\n- **Phone:** (713) 313-4357\n- **Email:** helpdesk@tsu.edu\n- **Hours:** Mon-Fri 8:00 AM - 6:00 PM, Sat 10:00 AM - 2:00 PM\n\nThey help with:\n- TSU email setup\n- Wi-Fi connectivity\n- myTSU portal issues\n- Blackboard access\n- Password resets\n- Campus computer labs\n\nFor password issues, try the self-service reset on the myTSU portal first — it's usually the fastest fix!";
-  }
-
-  // Generic fallback
-  return "That's a great question! While I'm still learning about that specific topic, here are some resources that might help:\n\n- **Academic Advising** — MLK Building, Suite 105, (713) 313-7981\n- **Student Health Center** — (713) 313-7173\n- **Career Services** — MLK Building, Room 108, (713) 313-7225\n- **IT Help Desk** — (713) 313-4357\n\nYou can also browse the **Resources** page in your dashboard for a complete directory of campus offices and services. Is there something more specific I can help you with?";
-}
-
 export default function AskMatePage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [profile, setProfile] = useState<StudentProfile | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch profile on mount
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      supabase
+        .from("profiles")
+        .select(
+          "preferred_name, major, classification, college, interests, career_goals, campus_involvement"
+        )
+        .eq("id", user.id)
+        .single()
+        .then(({ data }) => {
+          if (data) {
+            setProfile({
+              preferred_name: data.preferred_name || "",
+              major: data.major || "",
+              classification: data.classification || "",
+              college: data.college || "",
+              interests: data.interests || [],
+              career_goals: data.career_goals || [],
+              involvement: data.campus_involvement || [],
+            });
+          }
+        });
+    });
+  }, []);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -99,17 +90,54 @@ export default function AskMatePage() {
     setInput("");
     setIsTyping(true);
 
-    // Simulate response delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    // Build history for API (last 20 messages, mapped to user/model roles)
+    const allMessages = [...messages, userMessage];
+    const history = allMessages.slice(-20).map((msg) => ({
+      role: msg.role === "user" ? ("user" as const) : ("model" as const),
+      content: msg.content,
+    }));
 
-    const response = getSimulatedResponse(content);
-    const assistantMessage: Message = {
-      id: generateId(),
-      role: "assistant",
-      content: response,
-    };
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: content.trim(),
+          history: history.slice(0, -1), // Don't include the current message in history
+          profile: profile || {
+            preferred_name: "",
+            major: "",
+            classification: "",
+            college: "",
+            interests: [],
+            career_goals: [],
+            involvement: [],
+          },
+        }),
+      });
 
-    setMessages((prev) => [...prev, assistantMessage]);
+      const data = await res.json();
+
+      const assistantMessage: Message = {
+        id: generateId(),
+        role: "assistant",
+        content:
+          data.reply ||
+          data.error ||
+          "Sorry, I couldn't process that. Please try again.",
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch {
+      const errorMessage: Message = {
+        id: generateId(),
+        role: "assistant",
+        content:
+          "Sorry, I'm having trouble connecting right now. Please check your internet and try again.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    }
+
     setIsTyping(false);
     inputRef.current?.focus();
   }
@@ -130,17 +158,17 @@ export default function AskMatePage() {
       {/* Header */}
       <header className="shrink-0 mb-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-100 dark:bg-gold-900/30">
             <MessageCircle
-              className="h-5 w-5 text-gold-700"
+              className="h-5 w-5 text-gold-700 dark:text-gold-400"
               aria-hidden="true"
             />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-maroon-950 sm:text-3xl">
+            <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] sm:text-3xl">
               Ask M.A.T.E
             </h1>
-            <p className="text-sm text-surface-600">
+            <p className="text-sm text-surface-600 dark:text-[#A0A0A0]">
               Your AI campus assistant
             </p>
           </div>
@@ -150,7 +178,7 @@ export default function AskMatePage() {
       {/* Chat Area */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto rounded-2xl border border-surface-200 bg-white p-4"
+        className="flex-1 overflow-y-auto rounded-2xl border border-surface-200 dark:border-[#2A2A2A] bg-white dark:bg-[#1A1A1A] p-4"
         role="log"
         aria-label="Chat messages"
         aria-live="polite"
@@ -158,17 +186,19 @@ export default function AskMatePage() {
         {isEmpty && !isTyping ? (
           /* Welcome + Suggested Prompts */
           <div className="flex h-full flex-col items-center justify-center text-center px-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gold-100">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gold-100 dark:bg-gold-900/30">
               <MessageCircle
-                className="h-8 w-8 text-gold-700"
+                className="h-8 w-8 text-gold-700 dark:text-gold-400"
                 aria-hidden="true"
               />
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-surface-900">
-              Hi, Tiger! How can I help?
+            <h2 className="mt-4 text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
+              Hi{profile?.preferred_name ? `, ${profile.preferred_name}` : ""}!
+              How can I help?
             </h2>
-            <p className="mt-1 text-sm text-surface-500 max-w-sm">
-              Ask me anything about TSU campus life, classes, resources, or events.
+            <p className="mt-1 text-sm text-surface-500 dark:text-[#A0A0A0] max-w-sm">
+              Ask me anything about TSU campus life, classes, resources, or
+              events.
             </p>
 
             <div className="mt-6 grid gap-2 sm:grid-cols-2 w-full max-w-lg">
@@ -177,7 +207,7 @@ export default function AskMatePage() {
                   key={prompt}
                   type="button"
                   onClick={() => handleSuggestion(prompt)}
-                  className="rounded-xl border border-surface-200 bg-surface-50 px-4 py-3 text-left text-sm text-surface-700 transition-colors hover:bg-surface-100 hover:border-surface-300"
+                  className="rounded-xl border border-surface-200 dark:border-[#2A2A2A] bg-surface-50 dark:bg-[#252525] px-4 py-3 text-left text-sm text-surface-700 dark:text-[#A0A0A0] transition-colors hover:bg-surface-100 dark:hover:bg-[#2A2A2A] hover:border-surface-300 dark:hover:border-surface-600"
                 >
                   {prompt}
                 </button>
@@ -195,14 +225,9 @@ export default function AskMatePage() {
                   msg.role === "user" ? "justify-end" : "justify-start"
                 )}
               >
-                <div
-                  className={cn(
-                    "max-w-[85%] sm:max-w-[75%]",
-                    msg.role === "user" ? "order-1" : "order-1"
-                  )}
-                >
+                <div className="max-w-[85%] sm:max-w-[75%]">
                   {msg.role === "assistant" && (
-                    <span className="mb-1 block text-xs font-medium text-gold-700">
+                    <span className="mb-1 block text-xs font-medium text-gold-700 dark:text-gold-400">
                       M.A.T.E
                     </span>
                   )}
@@ -211,7 +236,7 @@ export default function AskMatePage() {
                       "rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap",
                       msg.role === "user"
                         ? "bg-maroon-900 text-white rounded-br-md"
-                        : "bg-surface-100 text-surface-900 rounded-bl-md"
+                        : "bg-surface-100 dark:bg-[#252525] text-surface-900 dark:text-[#F5F5F5] rounded-bl-md"
                     )}
                   >
                     {msg.role === "assistant" ? (
@@ -228,10 +253,10 @@ export default function AskMatePage() {
             {isTyping && (
               <div className="flex justify-start">
                 <div>
-                  <span className="mb-1 block text-xs font-medium text-gold-700">
+                  <span className="mb-1 block text-xs font-medium text-gold-700 dark:text-gold-400">
                     M.A.T.E
                   </span>
-                  <div className="inline-flex items-center gap-1 rounded-2xl rounded-bl-md bg-surface-100 px-4 py-3">
+                  <div className="inline-flex items-center gap-1 rounded-2xl rounded-bl-md bg-surface-100 dark:bg-[#252525] px-4 py-3">
                     <span className="h-2 w-2 animate-bounce rounded-full bg-surface-400 [animation-delay:0ms]" />
                     <span className="h-2 w-2 animate-bounce rounded-full bg-surface-400 [animation-delay:150ms]" />
                     <span className="h-2 w-2 animate-bounce rounded-full bg-surface-400 [animation-delay:300ms]" />
@@ -244,10 +269,7 @@ export default function AskMatePage() {
       </div>
 
       {/* Input Area */}
-      <form
-        onSubmit={handleSubmit}
-        className="mt-3 flex items-center gap-2"
-      >
+      <form onSubmit={handleSubmit} className="mt-3 flex items-center gap-2">
         <input
           ref={inputRef}
           type="text"
@@ -255,6 +277,7 @@ export default function AskMatePage() {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about campus life, classes, resources..."
           disabled={isTyping}
+          maxLength={1000}
           className="input-field flex-1"
           aria-label="Type your message"
         />
@@ -276,7 +299,7 @@ export default function AskMatePage() {
 }
 
 function FormattedResponse({ content }: { content: string }) {
-  // Simple markdown-like rendering for bold text and line breaks
+  // Render bold text (**text**) and preserve line breaks
   const parts = content.split(/(\*\*[^*]+\*\*)/g);
 
   return (

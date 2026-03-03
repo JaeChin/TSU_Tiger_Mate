@@ -14,7 +14,8 @@
    ============================================================ */
 @layer base {
   body {
-    @apply font-body text-surface-900 bg-white antialiased;
+    @apply font-body text-surface-900 bg-white antialiased
+           dark:bg-[#0F0F0F] dark:text-[#F5F5F5];
   }
 
   h1,
@@ -33,11 +34,13 @@
 @layer components {
   /* Cards */
   .card {
-    @apply bg-white rounded-2xl border border-surface-200 p-5;
+    @apply bg-white rounded-2xl border border-surface-200 p-5
+           dark:bg-[#1A1A1A] dark:border-[#2A2A2A];
   }
 
   .card-hover {
-    @apply card transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
+    @apply card transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5
+           dark:hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.4)];
   }
 
   /* Buttons */
@@ -47,7 +50,8 @@
            rounded-xl px-6 py-3
            transition-colors duration-200
            hover:bg-maroon-800
-           focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-900 focus-visible:ring-offset-2;
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-900 focus-visible:ring-offset-2
+           dark:focus-visible:ring-offset-[#0F0F0F];
   }
 
   .btn-secondary {
@@ -57,7 +61,10 @@
            rounded-xl px-6 py-3
            transition-colors duration-200
            hover:bg-maroon-50
-           focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-900 focus-visible:ring-offset-2;
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-900 focus-visible:ring-offset-2
+           dark:bg-[#1A1A1A] dark:text-maroon-200 dark:border-maroon-700
+           dark:hover:bg-[#252525]
+           dark:focus-visible:ring-offset-[#0F0F0F];
   }
 
   .btn-gold {
@@ -66,7 +73,8 @@
            rounded-xl px-6 py-3
            transition-colors duration-200
            hover:bg-gold-400
-           focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2;
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2
+           dark:focus-visible:ring-offset-[#0F0F0F];
   }
 
   /* Inputs */
@@ -75,7 +83,10 @@
            rounded-xl px-4 py-3 text-surface-900
            placeholder:text-surface-400
            transition-colors duration-200
-           focus:outline-none focus:ring-2 focus:ring-maroon-900 focus:border-maroon-900;
+           focus:outline-none focus:ring-2 focus:ring-maroon-900 focus:border-maroon-900
+           dark:bg-[#1A1A1A] dark:border-[#2A2A2A] dark:text-[#F5F5F5]
+           dark:placeholder:text-[#A0A0A0]
+           dark:focus:border-maroon-700 dark:focus:ring-maroon-700;
   }
 
   /* Badges */
@@ -85,39 +96,48 @@
   }
 
   .badge-academic {
-    @apply badge bg-blue-100 text-blue-800;
+    @apply badge bg-blue-100 text-blue-800
+           dark:bg-blue-900/30 dark:text-blue-300;
   }
 
   .badge-social {
-    @apply badge bg-pink-100 text-pink-800;
+    @apply badge bg-pink-100 text-pink-800
+           dark:bg-pink-900/30 dark:text-pink-300;
   }
 
   .badge-sports {
-    @apply badge bg-green-100 text-green-800;
+    @apply badge bg-green-100 text-green-800
+           dark:bg-green-900/30 dark:text-green-300;
   }
 
   .badge-career {
-    @apply badge bg-purple-100 text-purple-800;
+    @apply badge bg-purple-100 text-purple-800
+           dark:bg-purple-900/30 dark:text-purple-300;
   }
 
   .badge-health {
-    @apply badge bg-teal-100 text-teal-800;
+    @apply badge bg-teal-100 text-teal-800
+           dark:bg-teal-900/30 dark:text-teal-300;
   }
 
   .badge-financial {
-    @apply badge bg-amber-100 text-amber-800;
+    @apply badge bg-amber-100 text-amber-800
+           dark:bg-amber-900/30 dark:text-amber-300;
   }
 
   .badge-cultural {
-    @apply badge bg-orange-100 text-orange-800;
+    @apply badge bg-orange-100 text-orange-800
+           dark:bg-orange-900/30 dark:text-orange-300;
   }
 
   .badge-other {
-    @apply badge bg-surface-100 text-surface-700;
+    @apply badge bg-surface-100 text-surface-700
+           dark:bg-surface-800 dark:text-surface-300;
   }
 
   .badge-campus {
-    @apply badge bg-maroon-100 text-maroon-900;
+    @apply badge bg-maroon-100 text-maroon-900
+           dark:bg-maroon-900/30 dark:text-maroon-200;
   }
 }
 

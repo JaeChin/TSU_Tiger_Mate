@@ -35,14 +35,14 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const categoryColors: Record<string, string> = {
-  academic: "bg-blue-100 text-blue-700",
-  financial: "bg-amber-100 text-amber-700",
-  health: "bg-teal-100 text-teal-700",
-  safety: "bg-red-100 text-red-700",
-  dining: "bg-orange-100 text-orange-700",
-  technology: "bg-indigo-100 text-indigo-700",
-  career: "bg-purple-100 text-purple-700",
-  housing: "bg-emerald-100 text-emerald-700",
+  academic: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  financial: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+  health: "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300",
+  safety: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+  dining: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
+  technology: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300",
+  career: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+  housing: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
 };
 
 const badgeClass: Record<string, string> = {
@@ -111,7 +111,7 @@ export function ResourceList({ resources }: ResourceListProps) {
               ? iconMap[resource.icon]
               : null;
             const colorClasses =
-              categoryColors[resource.category] || "bg-surface-100 text-surface-700";
+              categoryColors[resource.category] || "bg-surface-100 text-surface-700 dark:bg-surface-800 dark:text-surface-300";
 
             return (
               <article key={resource.id} className="card-hover">
@@ -127,7 +127,7 @@ export function ResourceList({ resources }: ResourceListProps) {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-base font-semibold text-surface-900 leading-snug">
+                    <h2 className="text-base font-semibold text-surface-900 dark:text-[#F5F5F5] leading-snug">
                       {resource.name}
                     </h2>
                     <span
@@ -141,13 +141,13 @@ export function ResourceList({ resources }: ResourceListProps) {
 
                 {/* Description */}
                 {resource.description && (
-                  <p className="mt-3 text-sm text-surface-500 leading-relaxed">
+                  <p className="mt-3 text-sm text-surface-500 dark:text-[#A0A0A0] leading-relaxed">
                     {resource.description}
                   </p>
                 )}
 
                 {/* Contact Info */}
-                <div className="mt-3 space-y-1.5 text-sm text-surface-600">
+                <div className="mt-3 space-y-1.5 text-sm text-surface-600 dark:text-[#A0A0A0]">
                   {resource.location && (
                     <div className="flex items-start gap-2">
                       <MapPin
@@ -174,7 +174,7 @@ export function ResourceList({ resources }: ResourceListProps) {
                       />
                       <a
                         href={`tel:${resource.phone}`}
-                        className="text-maroon-900 hover:text-maroon-700 font-medium"
+                        className="text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200 font-medium"
                       >
                         {resource.phone}
                       </a>
@@ -188,7 +188,7 @@ export function ResourceList({ resources }: ResourceListProps) {
                       />
                       <a
                         href={`mailto:${resource.email}`}
-                        className="text-maroon-900 hover:text-maroon-700 font-medium"
+                        className="text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200 font-medium"
                       >
                         {resource.email}
                       </a>
@@ -204,7 +204,7 @@ export function ResourceList({ resources }: ResourceListProps) {
                         href={resource.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-maroon-900 hover:text-maroon-700 font-medium truncate"
+                        className="text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200 font-medium truncate"
                       >
                         Visit website
                       </a>
@@ -217,15 +217,15 @@ export function ResourceList({ resources }: ResourceListProps) {
         </div>
       ) : (
         /* Empty State */
-        <div className="rounded-2xl border border-surface-200 bg-white py-16 text-center">
+        <div className="rounded-2xl border border-surface-200 dark:border-[#2A2A2A] bg-white dark:bg-[#1A1A1A] py-16 text-center">
           <Search
-            className="mx-auto h-10 w-10 text-surface-300"
+            className="mx-auto h-10 w-10 text-surface-300 dark:text-surface-600"
             aria-hidden="true"
           />
-          <h2 className="mt-3 text-lg font-semibold text-surface-900">
+          <h2 className="mt-3 text-lg font-semibold text-surface-900 dark:text-[#F5F5F5]">
             No resources found
           </h2>
-          <p className="mt-1 text-sm text-surface-500">
+          <p className="mt-1 text-sm text-surface-500 dark:text-[#A0A0A0]">
             Try a different search term.
           </p>
           {query && (

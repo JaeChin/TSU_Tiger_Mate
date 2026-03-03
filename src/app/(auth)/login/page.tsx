@@ -79,10 +79,10 @@ function LoginForm() {
 
   return (
     <section className="card p-8">
-      <h1 className="text-2xl font-bold text-maroon-950 text-center">
+      <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] text-center">
         Welcome back, Tiger
       </h1>
-      <p className="mt-2 text-sm text-surface-500 text-center">
+      <p className="mt-2 text-sm text-surface-500 dark:text-[#A0A0A0] text-center">
         Sign in with your .edu email to continue.
       </p>
 
@@ -98,7 +98,7 @@ function LoginForm() {
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-surface-700 mb-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
             Email
           </label>
           <input
@@ -114,7 +114,7 @@ function LoginForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-surface-700 mb-1.5">
+          <label htmlFor="password" className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
             Password
           </label>
           <input
@@ -154,9 +154,9 @@ function LoginForm() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-surface-500">
+      <p className="mt-6 text-center text-sm text-surface-500 dark:text-[#A0A0A0]">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-maroon-900 hover:text-maroon-700">
+        <Link href="/signup" className="font-medium text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200">
           Create one
         </Link>
       </p>

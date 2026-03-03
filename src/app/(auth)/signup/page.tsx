@@ -71,15 +71,15 @@ export default function SignupPage() {
   if (success) {
     return (
       <section className="card p-8 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-          <CheckCircle2 className="h-7 w-7 text-green-600" aria-hidden="true" />
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+          <CheckCircle2 className="h-7 w-7 text-green-600 dark:text-green-400" aria-hidden="true" />
         </div>
-        <h1 className="mt-5 text-2xl font-bold text-maroon-950">
+        <h1 className="mt-5 text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5]">
           Check your inbox!
         </h1>
-        <p className="mt-3 text-sm text-surface-600 leading-relaxed">
+        <p className="mt-3 text-sm text-surface-600 dark:text-[#A0A0A0] leading-relaxed">
           We sent a confirmation link to{" "}
-          <strong className="text-surface-900">{email.trim()}</strong>.
+          <strong className="text-surface-900 dark:text-[#F5F5F5]">{email.trim()}</strong>.
           Click it to activate your account.
         </p>
         <Link href="/login" className="btn-primary mt-8 w-full">
@@ -91,26 +91,26 @@ export default function SignupPage() {
 
   return (
     <section className="card p-8">
-      <h1 className="text-2xl font-bold text-maroon-950 text-center">
+      <h1 className="text-2xl font-bold text-maroon-950 dark:text-[#F5F5F5] text-center">
         Meet your M.A.T.E
       </h1>
-      <p className="mt-2 text-sm text-surface-500 text-center">
+      <p className="mt-2 text-sm text-surface-500 dark:text-[#A0A0A0] text-center">
         Create an account with your .edu email to get started.
       </p>
 
       {error && (
         <div
           role="alert"
-          className="mt-6 flex items-start gap-3 rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-800"
+          className="mt-6 flex items-start gap-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-800 dark:text-red-300"
         >
-          <AlertCircle className="h-5 w-5 shrink-0 text-red-600" aria-hidden="true" />
+          <AlertCircle className="h-5 w-5 shrink-0 text-red-600 dark:text-red-400" aria-hidden="true" />
           <p>{error}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
         <div>
-          <label htmlFor="full-name" className="block text-sm font-medium text-surface-700 mb-1.5">
+          <label htmlFor="full-name" className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
             Full name
           </label>
           <input
@@ -126,7 +126,7 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-surface-700 mb-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
             Email
           </label>
           <input
@@ -142,7 +142,7 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-surface-700 mb-1.5">
+          <label htmlFor="password" className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
             Password
           </label>
           <input
@@ -174,9 +174,9 @@ export default function SignupPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-surface-500">
+      <p className="mt-6 text-center text-sm text-surface-500 dark:text-[#A0A0A0]">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-maroon-900 hover:text-maroon-700">
+        <Link href="/login" className="font-medium text-maroon-900 hover:text-maroon-700 dark:text-maroon-300 dark:hover:text-maroon-200">
           Sign in
         </Link>
       </p>
