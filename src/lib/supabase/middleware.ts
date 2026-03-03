@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const DEV_BYPASS = process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true";
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -36,12 +38,17 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
+  const isAuthPage = pathname === "/login" || pathname === "/signup" || pathname === "/forgot-password";
   const isDashboardPage = pathname.startsWith("/dashboard") ||
     pathname.startsWith("/events") ||
     pathname.startsWith("/resources") ||
     pathname.startsWith("/todos") ||
     pathname.startsWith("/ask");
+
+  // Dev bypass — skip auth redirects entirely
+  if (DEV_BYPASS) {
+    return supabaseResponse;
+  }
 
   // Unauthenticated users trying to access dashboard — redirect to login
   if (!user && isDashboardPage) {

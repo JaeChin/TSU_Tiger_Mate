@@ -42,6 +42,17 @@ export function formatTime(date: string | Date): string {
 }
 
 /**
+ * Map raw Supabase / network error messages to user-friendly text.
+ */
+export function friendlyAuthError(message: string): string {
+  const lower = message.toLowerCase();
+  if (lower.includes("failed to fetch") || lower.includes("networkerror") || lower.includes("load failed")) {
+    return "Unable to reach the server. Your Supabase project may be paused — check your dashboard at supabase.com, or try again later.";
+  }
+  return message;
+}
+
+/**
  * Return a greeting based on the current hour.
  */
 export function getGreeting(): string {

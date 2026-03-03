@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Sidebar } from "@/components/layout/sidebar";
 
+const DEV_BYPASS = process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true";
+
 export default async function DashboardLayout({
   children,
 }: Readonly<{
@@ -13,17 +15,21 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!user && !DEV_BYPASS) {
     redirect("/login");
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, email")
-    .eq("id", user.id)
-    .single();
+  let userName = "Tiger";
 
-  const userName = profile?.full_name || profile?.email || user.email || "Tiger";
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name, email")
+      .eq("id", user.id)
+      .single();
+
+    userName = profile?.full_name || profile?.email || user.email || "Tiger";
+  }
 
   return (
     <div className="min-h-screen bg-surface-50">
